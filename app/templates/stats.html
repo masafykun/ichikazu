@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>統計 — いちカズ</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo">
+        <span class="logo-mark">1</span><span class="logo-text">いちカズ</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container page-content">
+      <h2 class="page-title">アクセス統計</h2>
+
+      <div class="card stats-card">
+        <div class="stats-url-row">
+          <span class="stats-label">短縮URL</span>
+          <a href="https://{{ domain }}/{{ entry.code }}" target="_blank" rel="noopener" class="stats-short-url">
+            https://{{ domain }}/{{ entry.code }}
+          </a>
+        </div>
+        <div class="stats-url-row">
+          <span class="stats-label">元のURL</span>
+          <a href="{{ entry.original_url }}" target="_blank" rel="noopener" class="stats-original-url">
+            {{ entry.original_url }}
+          </a>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-value">{{ entry.click_count }}</div>
+            <div class="stat-name">クリック数</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">
+              {{ entry.created_at.strftime('%Y/%m/%d') }}
+            </div>
+            <div class="stat-name">作成日</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">
+              {% if entry.last_accessed_at %}
+                {{ entry.last_accessed_at.strftime('%Y/%m/%d %H:%M') }}
+              {% else %}
+                —
+              {% endif %}
+            </div>
+            <div class="stat-name">最終アクセス</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="back-link-row">
+        <a href="/" class="back-link">← 新しいURLを短縮する</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; suzukimasato</p>
+    </div>
+  </footer>
+</body>
+</html>

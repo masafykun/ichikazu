@@ -1,0 +1,14 @@
+# 環境変数
+.env
+
+# データベース
+data/*.db
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# misc
+.DS_Store

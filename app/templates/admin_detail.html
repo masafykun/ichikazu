@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>アクセスログ詳細 — いちカズ 管理</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/admin.css" />
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+</head>
+<body class="admin-body">
+  <header class="site-header">
+    <div class="container admin-header-inner">
+      <a href="/" class="logo">
+        <span class="logo-mark">1</span><span class="logo-text">いちカズ</span>
+      </a>
+      <span class="admin-badge">管理者ダッシュボード</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="container admin-content">
+
+      <div class="back-link-row">
+        <a href="/admin" class="back-link">← URL一覧へ戻る</a>
+      </div>
+
+      <div class="admin-card url-info-card">
+        <h2 class="admin-section-title">URL情報</h2>
+        <div class="info-grid">
+          <div class="info-row">
+            <span class="info-label">短縮URL</span>
+            <a href="https://{{ domain }}/{{ entry.code }}" target="_blank" class="code-link">
+              https://{{ domain }}/{{ entry.code }}
+            </a>
+          </div>
+          <div class="info-row">
+            <span class="info-label">元のURL</span>
+            <a href="{{ entry.original_url }}" target="_blank" class="original-url-link">{{ entry.original_url }}</a>
+          </div>
+          <div class="info-row">
+            <span class="info-label">作成者IP</span>
+            <span class="ip-badge">{{ entry.creator_ip or '—' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">作成者UA</span>
+            <span class="ua-text">{{ entry.creator_ua or '—' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">作成日時</span>
+            <span>{{ entry.created_at.strftime('%Y/%m/%d %H:%M:%S') }} (UTC)</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">総クリック数</span>
+            <span class="click-count">{{ entry.click_count }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-section-title">
+          アクセスログ
+          <span class="log-count">最新 {{ logs|length }} 件</span>
+        </h2>
+
+        {% if logs %}
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>アクセス日時 (UTC)</th>
+                <th>IPアドレス</th>
+                <th>User-Agent</th>
+                <th>Referer</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in logs %}
+              <tr>
+                <td class="text-center text-muted">{{ loop.index }}</td>
+                <td class="nowrap">{{ log.accessed_at.strftime('%Y/%m/%d %H:%M:%S') }}</td>
+                <td><span class="ip-badge">{{ log.ip_address or '—' }}</span></td>
+                <td class="ua-cell" title="{{ log.user_agent or '' }}">{{ log.user_agent or '—' }}</td>
+                <td class="url-cell" title="{{ log.referer or '' }}">{{ log.referer or '—' }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="empty-msg">まだアクセスがありません。</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; suzukimasato</p>
+    </div>
+  </footer>
+</body>
+</html>

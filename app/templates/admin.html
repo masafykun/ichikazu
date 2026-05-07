@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理ダッシュボード — いちカズ</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/admin.css" />
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+</head>
+<body class="admin-body">
+  <header class="site-header">
+    <div class="container admin-header-inner">
+      <a href="/" class="logo">
+        <span class="logo-mark">1</span><span class="logo-text">いちカズ</span>
+      </a>
+      <span class="admin-badge">管理者ダッシュボード</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="container admin-content">
+
+      <div class="admin-summary">
+        <div class="summary-box">
+          <div class="summary-value">{{ total_urls }}</div>
+          <div class="summary-label">登録URL数</div>
+        </div>
+        <div class="summary-box">
+          <div class="summary-value">{{ total_clicks }}</div>
+          <div class="summary-label">総クリック数</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-section-title">短縮URL一覧</h2>
+        {% if urls %}
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>短縮コード</th>
+                <th>元のURL</th>
+                <th>作成者IP</th>
+                <th>作成者UA</th>
+                <th>作成日時</th>
+                <th>クリック数</th>
+                <th>最終アクセス</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for u in urls %}
+              <tr>
+                <td>
+                  <a href="https://{{ domain }}/{{ u.code }}" target="_blank" class="code-link">{{ u.code }}</a>
+                </td>
+                <td class="url-cell" title="{{ u.original_url }}">{{ u.original_url }}</td>
+                <td><span class="ip-badge">{{ u.creator_ip or '—' }}</span></td>
+                <td class="ua-cell" title="{{ u.creator_ua or '' }}">{{ u.creator_ua or '—' }}</td>
+                <td class="nowrap">{{ u.created_at.strftime('%Y/%m/%d %H:%M:%S') }}</td>
+                <td class="text-center">
+                  <span class="click-count">{{ u.click_count }}</span>
+                </td>
+                <td class="nowrap">
+                  {% if u.last_accessed_at %}
+                    {{ u.last_accessed_at.strftime('%Y/%m/%d %H:%M:%S') }}
+                  {% else %}
+                    —
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="/admin/url/{{ u.code }}" class="detail-btn">詳細</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="empty-msg">まだURLが登録されていません。</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; suzukimasato</p>
+    </div>
+  </footer>
+</body>
+</html>

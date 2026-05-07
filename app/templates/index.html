@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>いちカズ — 短縮URLサービス</title>
+  <meta name="description" content="いちカズは1qaz.jpの短縮URLサービスです。長いURLをシンプルな短縮URLに変換します。" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo">
+        <span class="logo-mark">1</span><span class="logo-text">いちカズ</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="container">
+      <h1 class="hero-title">URLを<br>もっとスマートに</h1>
+      <p class="hero-sub">長いURLを短くシンプルに。<span class="domain">{{ domain }}</span> で発行します。</p>
+
+      <div class="card" id="shortener-card">
+        <form id="shorten-form" autocomplete="off">
+          <div class="input-group">
+            <input
+              id="url-input"
+              type="url"
+              placeholder="短縮したいURLを入力してください"
+              required
+              spellcheck="false"
+            />
+            <button type="submit" id="submit-btn">
+              <span class="btn-label">短縮する</span>
+              <span class="btn-loading" hidden>...</span>
+            </button>
+          </div>
+          <p class="input-hint">https:// から始まるURLを入力してください</p>
+        </form>
+
+        <div id="result" class="result" hidden>
+          <p class="result-label">短縮URLができました</p>
+          <div class="result-url-row">
+            <a id="result-link" href="#" target="_blank" rel="noopener"></a>
+            <button id="copy-btn" class="copy-btn" title="コピー">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+          <a id="stats-link" class="stats-link" href="#" target="_blank">アクセス統計を見る →</a>
+          <p id="copy-msg" class="copy-msg" hidden>コピーしました！</p>
+        </div>
+
+        <div id="error-msg" class="error-msg" hidden></div>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <div>
+            <h3>瞬時に生成</h3>
+            <p>入力してボタンを押すだけ</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <div>
+            <h3>アクセス統計</h3>
+            <p>クリック数や最終アクセスを確認</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔗</div>
+          <div>
+            <h3>永続リンク</h3>
+            <p>同じURLは同じ短縮コードを返します</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; suzukimasato</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
