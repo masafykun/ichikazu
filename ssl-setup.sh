@@ -1,6 +1,6 @@
 #!/bin/bash
 # SSL証明書取得 & Nginx設定切り替えスクリプト
-# DNSレコードをこのサーバー (REDACTED-IP) に向けた後に実行してください
+# DNSレコードをこのサーバーに向けた後に実行してください
 
 set -e
 
@@ -8,7 +8,7 @@ echo "=== SSL証明書を取得します ==="
 certbot certonly \
   --webroot -w /var/www/certbot \
   -d 1qaz.jp -d www.1qaz.jp \
-  --email REDACTED-EMAIL \
+  --email "${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL env var}" \
   --agree-tos \
   --non-interactive
 
