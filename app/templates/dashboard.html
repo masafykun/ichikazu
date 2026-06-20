@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ダッシュボード — いちカズ</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=20260620a" />
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-mark">1</span><span class="logo-text">いちカズ</span></a>
+      <nav class="nav">
+        <span id="nav-guest" class="nav" hidden>
+          <button class="btn-nav" onclick="IK.openAuth('login')">ログイン</button>
+        </span>
+        <span id="nav-user" class="nav" hidden>
+          <span id="nav-plan" class="plan-badge"></span>
+          <a href="/" class="nav-link">トップ</a>
+          <button class="btn-ghost" onclick="IK.logout()">ログアウト</button>
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="container">
+      <div class="dash-head">
+        <h1 class="page-title" style="margin:0">マイリンク</h1>
+        <div class="dash-actions" id="dash-actions"></div>
+      </div>
+
+      <div id="alert-slot"></div>
+      <div id="api-key-slot"></div>
+
+      <div id="link-list" class="link-list">
+        <div class="empty-state">読み込み中…</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; suzukimasato</p>
+      <p class="footer-legal">
+        <a href="/terms">利用規約</a> ·
+        <a href="/privacy">プライバシーポリシー</a> ·
+        <a href="/tokushoho">特定商取引法に基づく表記</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- QRモーダル -->
+  <div class="modal-overlay" id="qr-modal" hidden>
+    <div class="modal" style="text-align:center">
+      <button class="modal-close" onclick="document.getElementById('qr-modal').hidden=true">✕</button>
+      <h2 style="font-size:1.1rem">QRコード</h2>
+      <div class="qr-wrap" id="qr-slot"></div>
+      <p id="qr-url" style="font-size:.85rem;color:var(--text-muted);margin-top:12px;word-break:break-all"></p>
+    </div>
+  </div>
+
+  <!-- 認証モーダル（未ログイン時用） -->
+  <div class="modal-overlay" id="auth-modal" hidden>
+    <div class="modal">
+      <button class="modal-close" onclick="IK.closeAuth()">✕</button>
+      <h2 id="auth-title">ログイン</h2>
+      <div class="alert error" id="auth-error" hidden></div>
+      <input id="auth-email" type="email" placeholder="メールアドレス" />
+      <input id="auth-password" type="password" placeholder="パスワード" />
+      <button class="btn-primary-full" id="auth-submit" onclick="IK.submitAuth()">ログイン</button>
+      <p class="auth-switch" id="auth-switch"></p>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js?v=20260620"></script>
+  <script src="/static/js/dashboard.js?v=20260620"></script>
+</body>
+</html>

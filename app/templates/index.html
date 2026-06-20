@@ -4,16 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>いちカズ — 短縮URLサービス</title>
-  <meta name="description" content="いちカズは1qaz.jpの短縮URLサービスです。長いURLをシンプルな短縮URLに変換します。" />
-  <link rel="stylesheet" href="/static/css/style.css" />
+  <meta name="description" content="いちカズは1qaz.jpの短縮URLサービスです。長いURLをシンプルな短縮URLに変換します。カスタムslug・クリック解析・QR・APIはProプランで。" />
+  <link rel="stylesheet" href="/static/css/style.css?v=20260620a" />
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
+    <div class="container header-inner">
       <a href="/" class="logo">
         <span class="logo-mark">1</span><span class="logo-text">いちカズ</span>
       </a>
+      <nav class="nav">
+        <span id="nav-guest" class="nav">
+          <a href="#pricing" class="nav-link">料金</a>
+          <button class="btn-ghost" onclick="IK.openAuth('login')">ログイン</button>
+          <button class="btn-nav" onclick="IK.openAuth('register')">無料登録</button>
+        </span>
+        <span id="nav-user" class="nav" hidden>
+          <span id="nav-plan" class="plan-badge"></span>
+          <a href="/dashboard" class="nav-link">ダッシュボード</a>
+          <button class="btn-ghost" onclick="IK.logout()">ログアウト</button>
+        </span>
+      </nav>
     </div>
   </header>
 
@@ -25,18 +37,32 @@
       <div class="card" id="shortener-card">
         <form id="shorten-form" autocomplete="off">
           <div class="input-group">
-            <input
-              id="url-input"
-              type="url"
-              placeholder="短縮したいURLを入力してください"
-              required
-              spellcheck="false"
-            />
+            <input id="url-input" type="url" placeholder="短縮したいURLを入力してください" required spellcheck="false" />
             <button type="submit" id="submit-btn">
               <span class="btn-label">短縮する</span>
               <span class="btn-loading" hidden>...</span>
             </button>
           </div>
+
+          <button type="button" class="opt-toggle" id="opt-toggle" onclick="IK.toggleOptions()">＋ カスタムslug・有効期限（Pro）</button>
+
+          <div class="pro-options" id="pro-options" hidden>
+            <div class="pro-row">
+              <label>カスタムslug <span class="pro-tag">PRO</span></label>
+              <div class="slug-input">
+                <span>{{ domain }}/</span>
+                <input id="slug-input" placeholder="my-link" spellcheck="false" />
+              </div>
+            </div>
+            <div class="pro-row">
+              <label>有効期限（日数） <span class="pro-tag">PRO</span></label>
+              <input id="expires-input" type="number" min="1" placeholder="未設定（無期限）" />
+            </div>
+          </div>
+          <div class="pro-upsell" id="pro-upsell" hidden>
+            カスタムslug・有効期限は <strong>Pro プラン（¥50/月）</strong> 限定です。<a href="#pricing">プランを見る →</a>
+          </div>
+
           <p class="input-hint">https:// から始まるURLを入力してください</p>
         </form>
 
@@ -61,35 +87,80 @@
       <div class="features">
         <div class="feature">
           <div class="feature-icon">⚡</div>
-          <div>
-            <h3>瞬時に生成</h3>
-            <p>入力してボタンを押すだけ</p>
-          </div>
+          <div><h3>瞬時に生成</h3><p>入力してボタンを押すだけ</p></div>
         </div>
         <div class="feature">
           <div class="feature-icon">📊</div>
-          <div>
-            <h3>アクセス統計</h3>
-            <p>クリック数や最終アクセスを確認</p>
-          </div>
+          <div><h3>アクセス統計</h3><p>クリック数や最終アクセスを確認</p></div>
         </div>
         <div class="feature">
           <div class="feature-icon">🔗</div>
-          <div>
-            <h3>永続リンク</h3>
-            <p>同じURLは同じ短縮コードを返します</p>
-          </div>
+          <div><h3>永続リンク</h3><p>同じURLは同じ短縮コードを返します</p></div>
         </div>
       </div>
+
+      <!-- 料金プラン -->
+      <section class="pricing" id="pricing" style="margin-top:64px">
+        <h2 class="section-title">料金プラン</h2>
+        <p class="section-sub">まずは無料で。もっと使いこなすなら Pro へ。</p>
+        <div class="plans">
+          <div class="plan">
+            <div class="plan-name">Free</div>
+            <div class="plan-price">¥0 <small>/ 月</small></div>
+            <ul>
+              <li>無制限のURL短縮</li>
+              <li>ランダム6文字コード</li>
+              <li>基本のクリック統計</li>
+              <li class="no">カスタムslug</li>
+              <li class="no">解析ダッシュボード</li>
+              <li class="no">QR・API・有効期限</li>
+            </ul>
+            <button class="plan-btn outline" onclick="IK.openAuth('register')">無料で始める</button>
+          </div>
+          <div class="plan plan-featured">
+            <div class="plan-flag">いちばん人気</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">¥50 <small>/ 月（税込）</small></div>
+            <ul>
+              <li>Free の全機能</li>
+              <li><strong>カスタムslug</strong>（1qaz.jp/好きな文字）</li>
+              <li><strong>クリック解析ダッシュボード</strong></li>
+              <li>QRコード生成</li>
+              <li>リンクの編集・削除・有効期限</li>
+              <li>API アクセス（一括作成）</li>
+            </ul>
+            <button class="plan-btn primary" id="pricing-pro-btn" onclick="IK.upgrade()">Pro にアップグレード</button>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
   <footer class="site-footer">
     <div class="container">
       <p>&copy; suzukimasato</p>
+      <p class="footer-legal">
+        <a href="/terms">利用規約</a> ·
+        <a href="/privacy">プライバシーポリシー</a> ·
+        <a href="/tokushoho">特定商取引法に基づく表記</a> ·
+        <a href="mailto:masafy.masato@gmail.com">お問い合わせ</a>
+      </p>
     </div>
   </footer>
 
-  <script src="/static/js/main.js"></script>
+  <!-- 認証モーダル -->
+  <div class="modal-overlay" id="auth-modal" hidden>
+    <div class="modal">
+      <button class="modal-close" onclick="IK.closeAuth()">✕</button>
+      <h2 id="auth-title">ログイン</h2>
+      <div class="alert error" id="auth-error" hidden></div>
+      <input id="auth-email" type="email" placeholder="メールアドレス" autocomplete="email" />
+      <input id="auth-password" type="password" placeholder="パスワード（8文字以上）" autocomplete="current-password" />
+      <button class="btn-primary-full" id="auth-submit" onclick="IK.submitAuth()">ログイン</button>
+      <p class="auth-switch" id="auth-switch"></p>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js?v=20260620"></script>
 </body>
 </html>
